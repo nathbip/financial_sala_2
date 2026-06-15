@@ -40,6 +40,9 @@ jobs:
           name: cpp-engine
           path: build/
 
+      - name: Grant execute permission
+        run: chmod +x build/engine_tests
+
       - name: Run C++ tests
         run: ctest --test-dir build --output-on-failure
 
