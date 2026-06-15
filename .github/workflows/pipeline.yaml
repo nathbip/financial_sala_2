@@ -61,3 +61,5 @@ jobs:
 
       - name: Run Python tests
         run: pytest python-validator/tests/test_validate.py
+        env:
+          PYTHONPATH: python-validator
