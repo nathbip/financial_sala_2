@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # TODO_WORKSHOP: Enable compiler warnings (e.g., -Wall -Wextra) here to improve code quality.
-
+add_compile_options(-Wall -Wextra -Wpedantic)
 # Fetch GoogleTest
 include(FetchContent)
 FetchContent_Declare(
