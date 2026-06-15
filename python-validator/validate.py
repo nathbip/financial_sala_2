@@ -20,6 +20,14 @@ def validate_report(filepath):
     # The JSON MUST contain exactly these keys: "count", "invalid_lines", "total", "average", "min", "max".
     # If any key is missing, or if extra keys exist, append an error and STOP validation.
 
+    expected_keys = {"count", "invalid_lines", "total", "average", "min", "max"}
+    if set(data.keys()) != expected_keys:
+        errors.append(f"JSON must contain exactly these keys: {expected_keys}. Found: {set(data.keys())}")
+        print("FAIL: Validation errors found:")
+        for e in errors:
+            print(f" - {e}")
+        return False
+    
     # Rule 1: Count
     if data.get("count", 0) <= 0:
         errors.append("count must be greater than 0")
@@ -30,10 +38,17 @@ def validate_report(filepath):
         errors.append("average cannot be greater than max")
         
     # TODO_WORKSHOP: Rule 3: Add check: 'min' cannot be greater than 'average'
+    min_val = data.get("min", 0)
+    if min_val > avg:
+        errors.append("min cannot be greater than average")
 
     # TODO_WORKSHOP: Rule 4: Mathematical Consistency
     # Check that (count * average) is almost equal to total.
     # Hint: Use a small epsilon (e.g., 0.01) for floating-point comparison, don't use '=='!
+    count = data.get("count", 0)
+    total = data.get("total", 0)
+    if abs(count * avg - total) > 0.01:
+        errors.append("Mathematical inconsistency: (count * average) != total")
 
     if errors:
         print("FAIL: Validation errors found:")
