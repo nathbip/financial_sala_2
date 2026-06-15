@@ -16,6 +16,10 @@ void TransactionProcessor::ProcessLine(const std::string& line) {
             
             // TODO_WORKSHOP: Implement Business Rule: Amounts MUST be strictly greater than 0.
             // If amount <= 0, increment invalid_lines and return early.
+            if (amount <= 0) {
+                current_report.invalid_lines++;
+                return;
+            }
 
             current_report.count++;
             current_report.total += amount;
@@ -27,12 +31,18 @@ void TransactionProcessor::ProcessLine(const std::string& line) {
 
             // TODO_WORKSHOP: Implement logic to track the minimum amount correctly.
             // Hint: Be careful when initializing min.
+            if (current_report.count == 1 || amount < current_report.min) {
+                current_report.min = amount;
+            }
+            
 
         } catch (...) {
             // TODO_WORKSHOP: If stod fails (e.g. invalid string), increment invalid_lines.
+            current_report.invalid_lines++;
         }
     } else {
         // TODO_WORKSHOP: If line doesn't have a comma, increment invalid_lines.
+        current_report.invalid_lines++;
     }
 }
 
@@ -51,6 +61,8 @@ std::string TransactionProcessor::GenerateJSON() const {
     ss << "{\n";
     ss << "  \"count\": " << current_report.count << ",\n";
     // TODO_WORKSHOP: Print "invalid_lines" and "min" to the JSON output.
+    ss << "  \"invalid_lines\": " << current_report.invalid_lines << ",\n";
+    ss << "  \"min\": " << current_report.min << ",\n";
     ss << "  \"total\": " << current_report.total << ",\n";
     ss << "  \"average\": " << current_report.average << ",\n";
     ss << "  \"max\": " << current_report.max << "\n";
