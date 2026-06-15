@@ -14,6 +14,10 @@ def validate_report(filepath):
         print("FAIL: Invalid JSON format.")
         return False
 
+    if not isinstance(data, dict):
+        print("FAIL: JSON content must be an object, not a primitive.")
+        return False
+
     errors = []
 
     # TODO_WORKSHOP: Rule 0: Strict Schema Validation
